@@ -141,7 +141,7 @@ checkoutBtn.addEventListener('click', function(){
     const isOpen = checkRestaurantOpen();
     if (!isOpen){
       Toastify({
-        text: 'Ops! Adega está fechada!',
+        text: 'Ops! Adega está fechada! Horário de funcionamento: Sexta á Sábado das 16:00/02:00 e Domingo das 12:00/22:00',
         duration: 3000,
         close: true,
         gravity: 'top', // `top` or `bottom`
@@ -154,28 +154,64 @@ checkoutBtn.addEventListener('click', function(){
       return;
     }
 
-  // Enviar o pedido para o whatsapp
-  const cartItems = cart.map((item)=> {
+// Enviar o pedido para o WhatsApp
+const cartItems = cart.map((item, index) => {
+    const subtotal = (item.quantity * item.price).toFixed(2); // Calcula o subtotal de cada item
     return (
-    `${item.name} Quantidade: (${item.quantity}) Preço: R$ ${item.price} | `
-  ) 
-    }).join("")
-
-    const message = encodeURIComponent(cartItems)
-    const phone = "11948174784"
-
-    window.open(`https://wa.me/${phone}?text=${message} Endereço: ${addressInput.value}`, '_blank')
-
-    cart = [];
-    updateCartModal();
+      `*${index + 1}. ${item.name}*\n` +
+      `Quantidade: ${item.quantity}\n` +
+      `Preço unitário: R$ ${item.price.toFixed(2)}\n` +
+      `Subtotal: R$ ${subtotal}\n`
+    );
+  }).join("\n");
+  
+  const total = cart.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2); // Total do pedido
+  const message = encodeURIComponent(
+    `Pedido:\n\n${cartItems}\n*Total: R$ ${total}*\n\nEndereço: ${addressInput.value}`
+  );
+  const phone = "+5511948174784";
+  
+  window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+  
+  // Limpar o carrinho após o envio
+  cart = [];
+  updateCartModal();
 })
-// Verificar a hora e manipular o card horário
-function checkRestaurantOpen(){
-    const data = new Date();
-    const hora = data.getHours();
-    return hora >= 9 && hora < 1;
-    // true = adega está aberta
+    // Verificar a hora e manipular o card horário
+    function checkRestaurantOpen() {
+        const data = new Date();
+        const diaSemana = data.getDay(); // 0 = Domingo, 1 = Segunda, ..., 6 = Sábado
+        const hora = data.getHours();
+    
+        // Atualiza o horário de funcionamento no HTML
+        updateOperatingHours(diaSemana);
+    
+        if (diaSemana === 5) { // Sexta (5)
+            return (hora >= 16 && hora < 24) || (hora >= 0 && hora < 2);
+        } else if (diaSemana === 6) { // Sábado (6)
+            return (hora >= 16 && hora < 24) || (hora >= 0 && hora < 2);
+        } else if (diaSemana === 0) { // Domingo
+            return hora < 2 || (hora >= 12 && hora < 22);
+        } else {
+            return false; // Fechado nos outros dias
+        }
+    }
+
+// Função para atualizar o horário de funcionamento no HTML
+function updateOperatingHours(diaSemana) {
+    const dateSpan = document.getElementById("date-span").querySelector("span");
+    
+    if (diaSemana === 5 || diaSemana === 6) {
+        dateSpan.textContent = "Sexta e Sábado - 16:00 às 02:00";
+    } else if (diaSemana === 0) {
+        dateSpan.textContent = "Domingo - 12:00 às 22:00";
+    } else {
+        dateSpan.textContent = "Fechado";
+    }
 }
+
+// Chama a função ao carregar a página para definir o horário atual
+document.addEventListener("DOMContentLoaded", checkRestaurantOpen);
 
 const spanItem = document.getElementById("date-span")
 const isOpen = checkRestaurantOpen();

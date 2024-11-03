@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,6 +20,68 @@
   <link rel="stylesheet" href="./styles/output.css">
 
   <title>Adega Tabacaria Andrade </title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+
+    /* Estilo para os botões do menu */
+    .menu-button {
+      font-size: 16px;
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      margin: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .menu-button:hover {
+      background-color: #2980b9;
+    }
+
+    /* Estilo do conteúdo dinâmico */
+    #content {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      text-align: center;
+    }
+
+    /* Estilos para o carrinho */
+    #cart-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+      text-align: left;
+    }
+  </style>
 </head>
 <body>
 
@@ -35,10 +97,10 @@
         Adega Tabacaria Andrade
       </h1>
 
-      <span class="text-white fonte-medium">Rua itamonte 2817</span>
+      <span class="text-white fonte-medium">Delivery</span>
 
       <div class="bg-green-600 px-4 py-1 rounded-lg mt-5" id="date-span">
-        <span class="text-white font-medium">Seg á Dom - 18:00 as 01:00</span>
+        <span class="text-white font-medium">Horário de funcionamento</span>
       </div>
 
     </div>
@@ -54,114 +116,146 @@
 
     <main class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-5xl px-2 mb-16">
 
-      <!--PRODUTO ITEM-->
-      <div class="flex gap-2">
-        <img
-        src="./assets/Ballantines.jpg"
-        alt="Ballantines"
-        class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-        />
+  <!-- Botões de categorias -->
+  <div id="menu" class="mt-10">
+    <button class="menu-button" onclick="changeContent('Whisky')">Whisky</button>
+    <button class="menu-button" onclick="changeContent('Gin')">Gin</button>
+    <button class="menu-button" onclick="changeContent('Vodka')">Vodka</button>
+    <button class="menu-button" onclick="changeContent('Cerveja')">Cerveja</button>
+    <button class="menu-button" onclick="changeContent('Essências')">Essências</button>
+    <button class="menu-button" onclick="changeContent('Carvão')">Carvão</button>
+    <button class="menu-button" onclick="changeContent('Energético')">Energético</button>
+  </div>
 
-        <div>
-          <p class="font-bold">Ballantines</p>
-          <p class="text-sm">
-            Combo
-          </p>
-          <div class="flex items-center gap-2 justify-between mt-5">
-            <p class="font-bold text-lg">R$100,00</p>
-            <button class="bg-gray-900 px-5 rounded add-to-cart-btn"
-                    data-name="Ballantines"
-                    data-price="100.00"
-                    >
-                      <i class="fa fa-cart-plus text-lg text-white"></i>        
-            </button>
+  <!-- CONTEÚDO DINÂMICO -->
+  <div id="content" class="mt-10 p-6 bg-white shadow-md rounded-lg max-w-2xl mx-auto">
+    <h2 class="text-2xl font-bold mb-4">Escolha uma bebida para ver os detalhes!</h2>
+    <p>Informações sobre as bebidas serão exibidas aqui.</p>
+  </div>
+
+<!-- SCRIPT -->
+<script>
+  // Função para alterar o conteúdo da página dinamicamente
+  function changeContent(drink) {
+    const contentDiv = document.getElementById('content');
+    let content = '';
+
+    switch (drink) {
+      case 'Whisky':
+        content = `
+          <h2 class="text-2xl font-bold mb-4">Whisky</h2>
+          
+          <!-- Produto Ballantines -->
+          <div class="flex gap-2 mb-6"> <!-- Adicionado mb-6 para espaçamento -->
+            <img
+              src="./assets/Ballantines.jpg"
+              alt="Ballantines"
+              class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+            />
+            <div>
+              <p class="font-bold">Ballantines</p>
+              <p class="text-sm">Combo</p>
+              <div class="flex items-center gap-2 justify-between mt-5">
+                <p class="font-bold text-lg">R$100,00</p>
+                <button class="bg-gray-900 px-5 rounded add-to-cart-btn"
+                        data-name="Ballantines - Combo"
+                        data-price="100.00">
+                  <i class="fa fa-cart-plus text-lg text-white"></i>
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
 
-      </div>
-
-      <!--FIM PRODUTO ITEM-->
-
-      <!--PRODUTO ITEM-->
-      <div class="flex gap-2">
-        <img
-        src="./assets/Blacklabel.jpg"
-        alt="Blacklabel"
-        class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-        />
-
-        <div>
-          <p class="font-bold">Black Label</p>
-          <p class="text-sm">
-            Combo
-          </p>
-          <div class="flex items-center gap-2 justify-between mt-5">
-            <p class="font-bold text-lg">R$220,00</p>
-            <button class="bg-gray-900 px-5 rounded add-to-cart-btn"
-                    data-name="Blacklabel"
-                    data-price="220.00"
-                    >
-                      <i class="fa fa-cart-plus text-lg text-white"></i>        
-            </button>
+          <!-- Produto Black Label -->
+          <div class="flex gap-2 mb-6"> <!-- Adicionado mb-6 para espaçamento -->
+            <img
+              src="./assets/Blacklabel.jpg"
+              alt="Blacklabel"
+              class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+            />
+            <div>
+              <p class="font-bold">Black Label</p>
+              <p class="text-sm">Combo</p>
+              <div class="flex items-center gap-2 justify-between mt-5">
+                <p class="font-bold text-lg">R$220,00</p>
+                <button class="bg-gray-900 px-5 rounded add-to-cart-btn"
+                        data-name="Blacklabel - Combo"
+                        data-price="220.00">
+                  <i class="fa fa-cart-plus text-lg text-white"></i>
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
 
-      </div>
-      <!--FIM PRODUTO ITEM-->
-
-      <!--PRODUTO ITEM-->
-      <div class="flex gap-2">
-        <img
-        src="./assets/Redlabel.jpg"
-        alt="Redlabel"
-        class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-        />
-
-        <div>
-          <p class="font-bold">Red Label</p>
-          <p class="text-sm">
-            Combo
-          </p>
-          <div class="flex items-center gap-2 justify-between mt-5">
-            <p class="font-bold text-lg">R$135,00</p>
-            <button class="bg-gray-900 px-5 rounded add-to-cart-btn"
-                    data-name="Redlabel"
-                    data-price="135.00"
-                    >
-                      <i class="fa fa-cart-plus text-lg text-white"></i>        
-            </button>
+          <!-- Produto Red Label -->
+          <div class="flex gap-2 mb-6"> <!-- Adicionado mb-6 para espaçamento -->
+            <img
+              src="./assets/Redlabel.jpg"
+              alt="Redlabel"
+              class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+            />
+            <div>
+              <p class="font-bold">Red Label</p>
+              <p class="text-sm">Combo</p>
+              <div class="flex items-center gap-2 justify-between mt-5">
+                <p class="font-bold text-lg">R$135,00</p>
+                <button class="bg-gray-900 px-5 rounded add-to-cart-btn"
+                        data-name="Redlabel - Combo"
+                        data-price="135.00">
+                  <i class="fa fa-cart-plus text-lg text-white"></i>
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
 
-      </div>
-      <!--FIM PRODUTO ITEM-->
-
-      <!--PRODUTO ITEM-->
-      <div class="flex gap-2">
-        <img
-        src="./assets/JackDaniels.jpg"
-        alt="JackDaniels"
-        class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-        />
-
-        <div>
-          <p class="font-bold">Jack Daniels</p>
-          <p class="text-sm">
-            Combo
-          </p>
-          <div class="flex items-center gap-2 justify-between mt-5">
-            <p class="font-bold text-lg">R$190,00</p>
-            <button class="bg-gray-900 px-5 rounded add-to-cart-btn"
-                    data-name="JackDaniels"
-                    data-price="190.00"
-                    >
-                      <i class="fa fa-cart-plus text-lg text-white"></i>        
-            </button>
+          <!-- Produto Jack Daniels -->
+          <div class="flex gap-2 mb-6"> <!-- Adicionado mb-6 para espaçamento -->
+            <img
+              src="./assets/JackDaniels.jpg"
+              alt="JackDaniels"
+              class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+            />
+            <div>
+              <p class="font-bold">Jack Daniels</p>
+              <p class="text-sm">Combo</p>
+              <div class="flex items-center gap-2 justify-between mt-5">
+                <p class="font-bold text-lg">R$190,00</p>
+                <button class="bg-gray-900 px-5 rounded add-to-cart-btn"
+                        data-name="JackDaniels - Combo"
+                        data-price="190.00">
+                  <i class="fa fa-cart-plus text-lg text-white"></i>
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        `;
+        break;
 
-      </div>
-      <!--FIM PRODUTO ITEM-->
+      case 'Gin':
+        content = `
+          <h2 class="text-2xl font-bold mb-4">Gin</h2>
+          <p>O gin é uma bebida destilada predominantemente aromatizada com zimbro. É refrescante e utilizado em uma variedade de coquetéis clássicos.</p>
+        `;
+        break;
+
+      case 'Vodka':
+        content = `
+          <h2 class="text-2xl font-bold mb-4">Vodka</h2>
+          <p>A vodka é uma bebida destilada famosa pela sua pureza e versatilidade. Pode ser consumida pura ou como base para diversos coquetéis.</p>
+        `;
+        break;
+
+      default:
+        content = `
+          <h2 class="text-2xl font-bold mb-4">Escolha uma bebida para ver os detalhes!</h2>
+          <p>Informações sobre as bebidas serão exibidas aqui.</p>
+        `;
+    }
+
+    // Atualiza o conteúdo da div
+    contentDiv.innerHTML = content;
+  }
+</script>
 
     </main>
    </div>
@@ -169,35 +263,48 @@
    <!-- FIM MENU-->
 
    <!--MODAL CART-->
-   <div class="bg-black/60 w-full h-full fixed top-0 left-0 z-[99]  items-center justify-center hidden"
-   id="cart-modal"
-   >
+<div class="bg-black/60 w-full h-full fixed top-0 left-0 z-[99] items-center justify-center hidden" id="cart-modal">
+  <div class="bg-white p-5 rounded-md min-w-[90%] md:min-w-[600px]">
+    <h2 class="text-center font-bold text-2xl mb-2">Meu Carrinho</h2>
 
-      <div class="bg-white p-5 rounded-md min-w-[90%] md:min-w-[600px]">
-        <h2 class="text-center font-bold text-2xl mb-2">Meu Carrinho</h2>
+    <!-- Lista de Itens no Carrinho -->
+    <div id="cart-items" class="flex justify-between mb-2 flex-col"></div>
 
-        <div id="cart-items" class="flex justify-between mb-2 flex-col"></div>
+    <!-- Seção de Opcionais para Produtos Selecionados -->
+    <div id="optionals-section" class="hidden mt-4">
+      <h3 class="font-bold text-lg">Opcionais</h3>
+      
 
-        <p class="font-bold">Total: <span id="cart-total">0.00</span></p>
+      <!-- Controle de Quantidade -->
+      <div class="flex items-center mt-3">
+        <button onclick="changeQuantity(-1)" class="bg-gray-200 px-2 py-1 rounded">-</button>
+        <span id="quantity" class="px-4">1</span>
+        <button onclick="changeQuantity(1)" class="bg-gray-200 px-2 py-1 rounded">+</button>
+      </div>
+    </div>
 
-        <p class="font-bold mt-4">Endereço de entrega</p>
-        <input
-        type="text"
-        placeholder="Digite seu endereço completo..."
-        id="address"
-        class="w-full border-2 p-1 rounded my-1"
-        />
-        <p class="text-red-500 hidden" id="address-warn">Digite seu endereço completo!</p>
+    <p class="font-bold">Total: <span id="cart-total">0.00</span></p>
 
-        <div class="flex items-center justify-between mt-5 w-full ">
-          <button id="close-modal-btn">Fechar</button>
-          <button id="checkout-btn" class="bg-green-500 text-white px-4 py-1 rounded">Finalizar pedido</button>
-        </div>
+    <p class="font-bold mt-4">Endereço de entrega</p>
+    <input type="text" placeholder="Digite seu endereço completo..." id="address" class="w-full border-2 p-1 rounded my-1" />
+    <p class="text-red-500 hidden" id="address-warn">Digite seu endereço completo!</p>
 
+    <label for="observationInput">Observação:</label>
+<input type="text" id="observationInput" placeholder="Digite sua observação aqui"
+class="w-full border-2 p-1 rounded my-1">
+
+    <div class="flex items-center justify-between mt-5 w-full ">
+      <button id="close-modal-btn">Fechar</button>
+      <button id="checkout-btn" class="bg-green-500 text-white px-4 py-1 rounded">Finalizar pedido</button>
+    </div>
+  </div>
+</div>
 
    </div>
 
    </div>
+
+
 
    <!--MODAL CART-->
 
@@ -221,7 +328,7 @@
       src="https://cdn.jsdelivr.net/npm/toastify-js"
     ></script>
 
-   <script src="script.js"></script>
+   <script src="teste.js"></script>
 
 </body>
 </html>
