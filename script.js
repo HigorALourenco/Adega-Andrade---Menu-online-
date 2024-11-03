@@ -166,16 +166,31 @@ const cartItems = cart.map((item, index) => {
   }).join("\n");
   
   const total = cart.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2); // Total do pedido
-  const message = encodeURIComponent(
-    `Pedido:\n\n${cartItems}\n*Total: R$ ${total}*\n\nEndereço: ${addressInput.value}`
-  );
-  const phone = "+5511948174784";
   
+  // Verificar se o endereço foi preenchido
+  const address = addressInput.value.trim();
+  if (!address) {
+    alert("Por favor, insira seu endereço para prosseguir com o pedido.");
+    return; // Interrompe o envio se o endereço estiver vazio
+  }
+  
+  // Adicionar a observação
+  const observation = document.getElementById("observationInput").value || ""; // Pega o valor do campo de observação
+  
+  // Formatar a mensagem final para o WhatsApp
+  const message = encodeURIComponent(
+    `Pedido:\n\n${cartItems}\n*Total: R$ ${total}*\n\n` +
+    `Endereço: ${address}\n` +
+    (observation ? `\nObservação: ${observation}` : "")
+  );
+  
+  const phone = "+5511948174784";
   window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
   
   // Limpar o carrinho após o envio
   cart = [];
   updateCartModal();
+
 })
     // Verificar a hora e manipular o card horário
     function checkRestaurantOpen() {
@@ -196,6 +211,7 @@ const cartItems = cart.map((item, index) => {
             return false; // Fechado nos outros dias
         }
     }
+
 
 // Função para atualizar o horário de funcionamento no HTML
 function updateOperatingHours(diaSemana) {
@@ -224,3 +240,10 @@ if(isOpen){
     spanItem.classList.add("bg-red-500")
 
 }
+
+
+
+
+
+  
+
